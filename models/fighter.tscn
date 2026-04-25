@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://c11lks4h4cmip"]
+
+[ext_resource type="Script" uid="uid://cex34d6vymxnp" path="res://models/fighter.gd" id="1_otxcl"]
+[ext_resource type="Texture2D" uid="uid://dt8gqivxvpcrl" path="res://assets/sprites/player.png" id="2_v5261"]
+[ext_resource type="Texture2D" uid="uid://b1snrx061ura2" path="res://assets/sprites/sword.png" id="3_v5261"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q12n2"]
+radius = 8.0
+height = 50.0
+
+[node name="fighter" type="CharacterBody2D"]
+script = ExtResource("1_otxcl")
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_v5261")
+
+[node name="collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_q12n2")
+
+[node name="hand" type="Node2D" parent="."]
+
+[node name="sword" type="Sprite2D" parent="hand"]
+position = Vector2(20.999998, 0)
+rotation = 1.5735842
+scale = Vector2(0.7857143, 1.0500001)
+texture = ExtResource("3_v5261")
