@@ -25,7 +25,7 @@ shape = SubResource("CapsuleShape2D_q12n2")
 
 [node name="sword" type="Sprite2D" parent="hand"]
 visible = false
-position = Vector2(20.999998, 0)
+position = Vector2(27.000002, 0)
 rotation = 1.5735842
 scale = Vector2(0.7857143, 1.0500001)
 texture = ExtResource("3_v5261")

@@ -32,66 +32,50 @@ var stamina: int = 100:
 
 
 func _physics_process(delta: float) -> void:
-	handle_shielding(delta)
-	handle_weilding(delta)
-	handle_movement(delta)
+	var r_input := Input.get_vector("RJ_LEFT", "RJ_RIGHT", "RJ_UP", "RJ_DOWN")
 	
-func handle_shielding(delta: float) -> void:
-	is_shielding = Input.is_action_pressed("LB")
-	if is_shielding and stamina > 0:
-		var r_input := Input.get_vector("RJ_LEFT", "RJ_RIGHT", "RJ_UP", "RJ_DOWN")
+	update_orientation(r_input)
+	handle_shielding(r_input, delta)
+	handle_weilding(r_input, delta)
+	handle_movement(delta)
+
+func update_orientation(r_input: Vector2) -> void:
+	if r_input.length() > 0.1:
+		var angle = wrapf(r_input.angle(), -PI, PI)
+		if abs(angle) > PI/2:
+			facing = Enums.FACING.EAST
+			sprite.flip_h = true
+		else:
+			facing = Enums.FACING.WEST
+			sprite.flip_h = false
+
+func handle_shielding(r_input: Vector2, _delta: float) -> void:
+	is_shielding = Input.is_action_pressed("LT") and stamina > 0
+	if is_shielding:
 		weapon_pivot.rotation = r_input.angle()
 		shield_sprite.position.x = lerp(20.0, 25.0, r_input.length())
 		shield_sprite.visible = true
-		if r_input.x < 0:
-			facing = Enums.FACING.EAST
-			sprite.flip_h = true
-		else:
-			facing = Enums.FACING.WEST
-			sprite.flip_h = false
 	else:
 		shield_sprite.visible = false
-		is_shielding = false
-		
 
-
-func handle_weilding(delta: float):
-	is_weilding = false
-	var r_input := Input.get_vector("RJ_LEFT", "RJ_RIGHT", "RJ_UP", "RJ_DOWN")
-	var _is_weilding := r_input.length() > 0.1
-	if _is_weilding and stamina > 0 and not is_shielding:
+func handle_weilding(r_input: Vector2, delta: float) -> void:
+	is_weilding = Input.is_action_pressed("LB") and stamina > 0 and not is_shielding
+	if is_weilding:
 		var current_tip_pos = get_sword_tip_local()
-		weapon_pivot.rotation = r_input.angle()
 		sword_sprite.position.x = lerp(10.0, 30.0, r_input.length())
 		sword_sprite.visible = true
-		is_weilding = true
-		if r_input.x < 0:
-			facing = Enums.FACING.EAST
-			sprite.flip_h = true
-		else:
-			facing = Enums.FACING.WEST
-			sprite.flip_h = false
-
+		weapon_pivot.rotation = r_input.angle()
+		
 		if last_sword_position == null:
 			last_sword_position = current_tip_pos
-			return
 		else:
 			var sw_vel = (current_tip_pos - last_sword_position) / delta
 			last_sword_position = current_tip_pos
 			sword_speed = sw_vel.length()
-			return
-			# Logic to handle the "Flip" spike
-			#if abs(sw_vel.length()) > 400:
-			#sword_speed = 400
-			#else:
-			#sword_speed = sw_vel.length()
-			#if sword_speed > 0:
-			#print("Sword Speed: ", sword_speed)
 	else:
+		sword_sprite.visible = false
 		sword_speed = null
 		last_sword_position = null
-		sword_sprite.visible = false
-
 
 func handle_movement(delta: float) -> void:
 	var direction := Input.get_vector("LEFT", "RIGHT", "UP", "DOWN")
@@ -99,12 +83,15 @@ func handle_movement(delta: float) -> void:
 		var target_speed = MAX_SPEED
 		var target_accel = ACCELERATION
 		var facing_vector = Vector2.LEFT if facing == Enums.FACING.EAST else Vector2.RIGHT
+		
 		if direction.dot(facing_vector) < 0:
 			target_speed *= 0.5
 			target_accel *= 0.4
-		if is_weilding:
+			
+		if is_weilding or is_shielding:
 			target_speed *= 0.7
 			target_accel *= 0.8
+			
 		velocity = velocity.move_toward(direction * target_speed, target_accel * delta)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
