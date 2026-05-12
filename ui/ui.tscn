@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://bri831ts88ep0"]
+
+[ext_resource type="Script" uid="uid://tqno5en0rnd3" path="res://ui/ui.gd" id="1_nb4k0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nb4k0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ks8t7"]
+bg_color = Color(0.32193768, 0.70187294, 0.21405944, 1)
+
+[node name="ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nb4k0")
+
+[node name="stamina_bar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_right = 174.0
+offset_bottom = 15.0
+theme_override_styles/background = SubResource("StyleBoxFlat_nb4k0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ks8t7")
+value = 100.0
+show_percentage = false

@@ -1,12 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://c11lks4h4cmip"]
+[gd_scene load_steps=7 format=3 uid="uid://c11lks4h4cmip"]
 
 [ext_resource type="Script" uid="uid://cex34d6vymxnp" path="res://models/fighter.gd" id="1_otxcl"]
 [ext_resource type="Texture2D" uid="uid://dt8gqivxvpcrl" path="res://assets/sprites/player.png" id="2_v5261"]
 [ext_resource type="Texture2D" uid="uid://b1snrx061ura2" path="res://assets/sprites/sword.png" id="3_v5261"]
+[ext_resource type="Texture2D" uid="uid://qaf7o03qfnua" path="res://assets/sprites/shield.png" id="4_q12n2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q12n2"]
 radius = 8.0
 height = 50.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v5261"]
+radius = 2.5454445
 
 [node name="fighter" type="CharacterBody2D"]
 script = ExtResource("1_otxcl")
@@ -20,7 +24,27 @@ shape = SubResource("CapsuleShape2D_q12n2")
 [node name="hand" type="Node2D" parent="."]
 
 [node name="sword" type="Sprite2D" parent="hand"]
+visible = false
 position = Vector2(20.999998, 0)
 rotation = 1.5735842
 scale = Vector2(0.7857143, 1.0500001)
 texture = ExtResource("3_v5261")
+
+[node name="hitbox" type="Area2D" parent="hand/sword"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="sword_hitbox" type="CollisionShape2D" parent="hand/sword/hitbox"]
+position = Vector2(-0.01419279, -3.8095105)
+shape = SubResource("CapsuleShape2D_v5261")
+
+[node name="shield" type="Sprite2D" parent="hand"]
+position = Vector2(15, -2)
+scale = Vector2(0.71428573, 0.87500006)
+texture = ExtResource("4_q12n2")
+
+[node name="tick" type="Timer" parent="."]
+autostart = true
+
+[connection signal="body_entered" from="hand/sword/hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="timeout" from="tick" to="." method="_on_tick_timeout"]

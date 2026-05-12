@@ -15,6 +15,11 @@ run/main_scene="uid://d1ycwyka7bqp2"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+FloatingLabel="*res://utils/FloatingLabel.gd"
+EventBus="*res://utils/EventBus.gd"
+
 [input]
 
 UP={
