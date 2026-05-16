@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c11lks4h4cmip"]
+[gd_scene load_steps=8 format=3 uid="uid://c11lks4h4cmip"]
 
 [ext_resource type="Script" uid="uid://cex34d6vymxnp" path="res://models/fighter.gd" id="1_otxcl"]
 [ext_resource type="Texture2D" uid="uid://dt8gqivxvpcrl" path="res://assets/sprites/player.png" id="2_v5261"]
@@ -12,7 +12,12 @@ height = 50.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v5261"]
 radius = 2.5454445
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_62d7h"]
+radius = 7.0
+height = 41.142853
+
 [node name="fighter" type="CharacterBody2D"]
+collision_mask = 2
 script = ExtResource("1_otxcl")
 
 [node name="sprite" type="Sprite2D" parent="."]
@@ -31,17 +36,25 @@ scale = Vector2(0.7857143, 1.0500001)
 texture = ExtResource("3_v5261")
 
 [node name="hitbox" type="Area2D" parent="hand/sword"]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 4
+collision_mask = 6
 
 [node name="sword_hitbox" type="CollisionShape2D" parent="hand/sword/hitbox"]
 position = Vector2(-0.01419279, -3.8095105)
 shape = SubResource("CapsuleShape2D_v5261")
 
 [node name="shield" type="Sprite2D" parent="hand"]
+visible = false
 position = Vector2(15, -2)
 scale = Vector2(0.71428573, 0.87500006)
 texture = ExtResource("4_q12n2")
+
+[node name="shield_body" type="StaticBody2D" parent="hand/shield"]
+collision_layer = 4
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hand/shield/shield_body"]
+shape = SubResource("CapsuleShape2D_62d7h")
 
 [node name="tick" type="Timer" parent="."]
 autostart = true

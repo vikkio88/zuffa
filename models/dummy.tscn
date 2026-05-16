@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://sqdy43l4dj55" path="res://assets/sprites/dummy.png" id="2_wx6o0"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p75ln"]
-radius = 8.0
 height = 48.0
 
 [node name="dummy" type="StaticBody2D"]
-collision_layer = 3
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_fxuw5")
 
 [node name="body" type="CollisionShape2D" parent="."]
